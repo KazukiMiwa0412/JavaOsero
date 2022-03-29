@@ -21,8 +21,8 @@ import osero.model.CountBlackWhite;
 import osero.model.ReverseOsero;
 
 public class OseroGui extends JPanel {
-	static final int WIDTH = 700; // 画面サイズ（幅）
-	static final int HEIGHT = 700; // 画面サイズ（高さ）
+	static final int WIDTH = 1000; // 画面サイズ（幅）
+	static final int HEIGHT = 800; // 画面サイズ（高さ）
 	int lm = 50; // 左側余白
 	int tm = 100; // 上側余白
 	int cs = 50; // マスのサイズ
@@ -31,6 +31,14 @@ public class OseroGui extends JPanel {
 	int StartCoordinateX = 65;// マス番号の左上のX座標
 	int StartCoordinateY = 140;// マス番号の左上のY座標
 
+	long startTime = System.currentTimeMillis();
+	long sumTime;
+	long startTime1 = System.currentTimeMillis();
+	long endTime1 = System.currentTimeMillis();
+	long sumTime1 = endTime1 - startTime1;
+	long startTime2 = System.currentTimeMillis();
+	long endTime2 = System.currentTimeMillis();
+	long sumTime2 = endTime2 - startTime2;
 	// インスタンス
 	StartConfig SC = new StartConfig();
 	ShowBoard SB = new ShowBoard();
@@ -95,6 +103,10 @@ public class OseroGui extends JPanel {
 
 		// 上段のメッセージ表示
 		g.setColor(Color.black);
+		sumTime = (System.currentTimeMillis() - startTime) / 100;
+
+		g.drawString("思考時間" + (sumTime / 10) + "." + (sumTime % 10) + "秒", 550, 70);
+
 		if (winner == 0) {
 			// 手番の表示
 			if (Main.count % 2 == 0) {
@@ -110,6 +122,10 @@ public class OseroGui extends JPanel {
 			g.drawString("引き分けです", 230, 70);
 		}
 		g.drawString("黒" + CBW.countBlack(Main.board) + " 白" + CBW.countWhite(Main.board), 230, 620);
+		// 時間の表示
+		g.drawString("黒の経過時間  " + (sumTime1 / 10) + "." + (sumTime1 % 10) + "秒", 550, 270);
+		g.drawString("白の経過時間  " + (sumTime2 / 10) + "." + (sumTime2 % 10) + "秒", 550, 420);
+		repaint();
 	}
 
 	// ゲームの終了判定を行う
@@ -177,10 +193,17 @@ public class OseroGui extends JPanel {
 				if (Main.count % 2 == 0) {
 					Main.userOsero = Main.black;
 					Main.enemyOsero = Main.white;
+					endTime2 = System.currentTimeMillis();
+					startTime1 = System.currentTimeMillis();
+					sumTime2 += (endTime2 - startTime2) / 100;
 				} else {
 					Main.userOsero = Main.white;
 					Main.enemyOsero = Main.black;
+					endTime1 = System.currentTimeMillis();
+					startTime2 = System.currentTimeMillis();
+					sumTime1 += (endTime1 - startTime1) / 100;
 				}
+				startTime = System.currentTimeMillis();
 				winner = judge();
 			}
 
