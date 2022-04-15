@@ -54,6 +54,7 @@ public class Main {
 
 		switch (mode) {
 		case 1:
+			// CUIでゲームをプレイ
 			OseroCui OC = new OseroCui();
 			OC.cuimode();
 			break;
